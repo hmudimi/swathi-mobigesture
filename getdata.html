@@ -106,9 +106,6 @@ body {font-family: Arial, Helvetica, sans-serif;}
 <h2>Lists of Data</h2>
 
 <div class="right-block">
-	<!-- <a href="#" id="editBtn" onclick="editBtn()">Edit</a>
-	<a href="#" id="delBtn" onclick="delBtn()">Delete</a>
-	<a href="#" id="myBtn">Add</a> -->
 	<button id="editBtn" onclick="editBtn()" disabled>Edit</button>
 	<button id="delBtn" onclick="delBtn()" disabled>Delete</button>
 	<button id="myBtn">Add</button>
@@ -135,17 +132,6 @@ body {font-family: Arial, Helvetica, sans-serif;}
  .then(allData => {
  console.log(allData);
                     let output = '<form >';
-					/*
-                    output += '<ol>';
-                    allData.forEach(function(data) {
-					console.log(data.username);
-                       // output += '   <li> '+jquery{data.title}+' </li> ';
-					   output += ' <li> ';
-                             output +=  data.username
-                          output += '  </li> ';
-                    });
-                    output += '</ol>'
-					*/
 					output += '<table border="1" style="width:100%;text-align:center;border-collapse: collapse;">';
 					output += '<tr><td>Id</td><td></td><td>Title</td><td>Body</td></tr>';
 					
@@ -268,7 +254,6 @@ fetch('https://jsonplaceholder.typicode.com/posts/'+selected)
   .then((response) => response.json())
   .then((data) => {console.log(data)
  
-    //  document.getElementById("username").value = 'defaultValue';
 output += '<table  style="width:100%;text-align:left;border-collapse: collapse;">';
 					output += '';
 					
@@ -288,7 +273,7 @@ output += '<table  style="width:100%;text-align:left;border-collapse: collapse;"
 						   output += ' <td> ';
                              output +=  'Body : <input type="text" class="add_input" id="email" name="email" value="'+data.body+'">'
                           output += '  </td> ';
-					output += ' </tr> <br><br>  <button id="" onclick="deleditUser('+data.id+')">Submit</button>';
+					output += ' </tr> <br><br> <tr><td> <br><button id="" onclick="deleditUser('+data.id+')">Submit</button></td></tr>';
                  
                     output += '</table></form>'
 					
@@ -352,8 +337,6 @@ function delBtn() {
   alert("Deleted successfully..");
 		  window.location.reload();
   }
-  //console.log(txt);
-  //document.getElementById("order").value = "You ordered a userData with: " + txt;
 }
 
 function delUser(id){
@@ -397,19 +380,9 @@ function delUser(id){
 	  
     </div>
     <div class="modal-body">
-	<h1>Enter Edit data:</h1><br>
+	<h1>Enter Edit data:</h1>
 	<div id="responsee"></div>
  
-<!-- <label class="add_label"><b>&nbsp;userId:&nbsp; </b></label>
-  <input type="number" class="add_input" id="userId" name="userId" value="">
-  <br><br>
-  <label class="add_label"><b>&nbsp;Title:&nbsp;</b></label>
-  <input type="text" class="add_input" id="username" name="username" value="">
-  <br><br>
-  <label class="add_label"><b>&nbsp;Body:&nbsp;</b></label>
-  <input type="text" class="add_input" id="email" name="email" value=""> 
-<br><br> 
-  <button id="del_btn" onclick="delUser()">Submit</button> -->
   </div>
  </div> 
   
