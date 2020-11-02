@@ -1,0 +1,419 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Get Data</title>
+
+      <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+.container{
+	width:100%;
+	margin:0 auto;
+	text-align:center;
+}
+.right-block{
+	float:right;
+}
+
+.add_label{
+
+	width:20%;
+}
+</style>
+</head>
+
+<body>
+
+
+
+<div class='container'>
+
+<h2>Lists of Data</h2>
+
+<div class="right-block">
+	<!-- <a href="#" id="editBtn" onclick="editBtn()">Edit</a>
+	<a href="#" id="delBtn" onclick="delBtn()">Delete</a>
+	<a href="#" id="myBtn">Add</a> -->
+	<button id="editBtn" onclick="editBtn()" disabled>Edit</button>
+	<button id="delBtn" onclick="delBtn()" disabled>Delete</button>
+	<button id="myBtn">Add</button>
+</div>
+<br>
+<div id='response'></div>
+
+</div>
+
+ 
+  <script>
+ 
+  $( document ).ready(function() {
+  getData();
+  });
+  
+  //https://jsonplaceholder.typicode.com/posts
+  //https://jsonplaceholder.typicode.com/users
+  
+    function getData() {
+      fetch('https://jsonplaceholder.typicode.com/posts')
+  .then((response) => response.json())
+ // .then((json) => console.log(json))
+ .then(allData => {
+ console.log(allData);
+                    let output = '<form >';
+					/*
+                    output += '<ol>';
+                    allData.forEach(function(data) {
+					console.log(data.username);
+                       // output += '   <li> '+jquery{data.title}+' </li> ';
+					   output += ' <li> ';
+                             output +=  data.username
+                          output += '  </li> ';
+                    });
+                    output += '</ol>'
+					*/
+					output += '<table border="1" style="width:100%;text-align:center;border-collapse: collapse;">';
+					output += '<tr><td>Id</td><td></td><td>Title</td><td>Body</td></tr>';
+					
+                    allData.forEach(function(data) {
+					console.log(data.title);
+					 output += ' <tr> ';
+                       // output += '   <li> '+jquery{data.title}+' </li> ';
+					   output += ' <td> ';
+                             output +=  data.id
+                          output += '  </td> ';
+						  output += ' <td> ';
+                             output +=  '<input type="checkbox" name="userChk" class="user-chk" onclick="userChkData()" value="'+data.id+'" data-chk="'+data.id+'">'
+                          output += '  </td> ';
+						   output += ' <td> ';
+                             output +=  data.title
+                          output += '  </td> ';
+						   output += ' <td> ';
+                             output +=  data.body
+                          output += '  </td> ';
+					output += ' </tr> ';
+                    });
+                    output += '</table></form>'
+					
+                    document.getElementById("response").innerHTML = output;
+                });
+    }
+	
+	
+	function addNew() {
+      var userid = document.getElementById("userId").value;
+      var username = document.getElementById("username").value;
+      var email = document.getElementById("email").value;
+
+      console.log("Input Data: " + userid + " " + username + " " + email);
+
+      fetch('https://jsonplaceholder.typicode.com/posts', {
+          method: 'POST',
+          body: JSON.stringify({
+            title: username,
+            body: email,
+            userId: userid
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        })
+        .then(response => response.json())
+        .then(json => {
+          console.log('response: ' + JSON.stringify(json));
+		  alert("Added successfully..");
+		  window.location.reload();
+        })
+    }
+	
+	
+$( document ).ready(function() {
+	// Get the modal
+var modal = document.getElementById("add-user");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+var editmodal = document.getElementById("edit-user");
+var edtbtn = document.getElementById("editBtn");
+
+edtbtn.onclick = function() {
+
+
+  editmodal.style.display = "block";
+  var selected = new Array();
+var user_chk = document.getElementsByClassName("user-chk");
+
+ 
+        // Loop and push the checked CheckBox value in Array.
+        for (var i = 0; i < user_chk.length; i++) {
+            if (user_chk[i].checked) {
+                selected.push(user_chk[i].value);
+            }
+        }
+ 
+        //Display the selected CheckBox values.
+        if (selected.length > 0) {
+           // alert("Selected values: " + selected.join(","));
+			  document.getElementById("delBtn").disabled = false;
+
+        }
+		
+		if (selected.length > 1) {
+           document.getElementById("editBtn").disabled = true;
+        }
+		else{
+		document.getElementById("editBtn").disabled = false;	
+		}
+
+console.log(selected.join(",") );
+
+
+var output= "";
+fetch('https://jsonplaceholder.typicode.com/posts/'+selected)
+  .then((response) => response.json())
+  .then((data) => {console.log(data)
+ 
+    //  document.getElementById("username").value = 'defaultValue';
+output += '<table  style="width:100%;text-align:left;border-collapse: collapse;">';
+					output += '';
+					
+					console.log(data.title);
+					 output += ' <tr> ';
+                       // output += '   <li> '+jquery{data.title}+' </li> ';
+					   output += ' <td> ';
+                             output +=  'User id : <input type="number" class="add_input" id="userId" name="userId" value="'+data.id+'">'
+                          output += '  </td> ';
+						 output += ' </tr> ';
+						 output += ' <tr> ';
+						   output += ' <td> ';
+                             output +=  'Title : <input type="text" class="add_input" id="username" name="username" value="'+data.title+'"> '
+                          output += '  </td> ';
+						  output += ' </tr> ';
+						  output += ' <tr> ';
+						   output += ' <td> ';
+                             output +=  'Body : <input type="text" class="add_input" id="email" name="email" value="'+data.body+'">'
+                          output += '  </td> ';
+					output += ' </tr> <br><br>  <button id="" onclick="deleditUser('+data.id+')">Submit</button>';
+                 
+                    output += '</table></form>'
+					
+                    document.getElementById("responsee").innerHTML = output;
+  
+		  
+  })
+
+
+}
+
+});
+function userChkData() {
+var selected = new Array();
+var user_chk = document.getElementsByClassName("user-chk");
+
+        for (var i = 0; i < user_chk.length; i++) {
+            if (user_chk[i].checked) {
+                selected.push(user_chk[i].value);
+            }
+        }
+ 
+        //Display the selected CheckBox values.
+        if (selected.length > 0) {
+           // alert("Selected values: " + selected.join(","));
+			  document.getElementById("delBtn").disabled = false;
+
+        }
+		
+		if (selected.length > 1) {
+           document.getElementById("editBtn").disabled = true;
+        }
+		else{
+		document.getElementById("editBtn").disabled = false;	
+		}
+
+console.log(selected.join(",") );
+ 
+}
+
+
+function delBtn() {
+  var userData = document.forms[0];
+  var txt = "";
+  var i;
+  if(userData.length > 1){
+  document.getElementById("delBtn").disabled = false;
+
+  for (i = 0; i < userData.length; i++) {
+    if (userData[i].checked) {
+      txt = txt + userData[i].value + " ";
+	  
+	  
+	  fetch('https://jsonplaceholder.typicode.com/posts/'+txt, {
+		method: 'DELETE',
+	})
+	
+	  
+    }
+  }
+  alert("Deleted successfully..");
+		  window.location.reload();
+  }
+  //console.log(txt);
+  //document.getElementById("order").value = "You ordered a userData with: " + txt;
+}
+
+function delUser(id){
+
+
+}
+  </script>
+  
+  <div id="add-user" style="" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+	  
+    </div>
+    <div class="modal-body">
+	<h1>Enter new data:</h1><br>
+	
+  <label class="add_label"><b>&nbsp;userId:&nbsp; </b></label>
+  <input type="number" class="add_input" id="userId" name="userId" value="">
+  <br><br>
+  <label class="add_label"><b>&nbsp;Title:&nbsp;</b></label>
+  <input type="text" class="add_input" id="username" name="username" value="">
+  <br><br>
+  <label class="add_label"><b>&nbsp;Body:&nbsp;</b></label>
+  <input type="text" class="add_input" id="email" name="email" value="">
+<br><br>
+  <button id="add_btn" onclick="addNew()">Submit</button>
+  </div>
+ </div> 
+  
+  </div>
+  
+   <div id="edit-user" style="" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+	  
+    </div>
+    <div class="modal-body">
+	<h1>Enter Edit data:</h1><br>
+	<div id="responsee"></div>
+ 
+<!-- <label class="add_label"><b>&nbsp;userId:&nbsp; </b></label>
+  <input type="number" class="add_input" id="userId" name="userId" value="">
+  <br><br>
+  <label class="add_label"><b>&nbsp;Title:&nbsp;</b></label>
+  <input type="text" class="add_input" id="username" name="username" value="">
+  <br><br>
+  <label class="add_label"><b>&nbsp;Body:&nbsp;</b></label>
+  <input type="text" class="add_input" id="email" name="email" value=""> 
+<br><br> 
+  <button id="del_btn" onclick="delUser()">Submit</button> -->
+  </div>
+ </div> 
+  
+  </div>
+</body>
+
+</html>
